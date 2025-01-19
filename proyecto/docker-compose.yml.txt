@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: database
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: company
+    networks:
+      - shared
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  ventas:
+    build:
+      context: ./ventas
+    container_name: ventas_app
+    depends_on:
+      - db
+    networks:
+      - ventas
+      - shared
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./ventas:/app
+
+  rrhh:
+    build:
+      context: ./rrhh
+    container_name: rrhh_app
+    depends_on:
+      - db
+    networks:
+      - rrhh
+      - shared
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./rrhh:/app
+
+  finanzas:
+    build:
+      context: ./finanzas
+    container_name: finanzas_app
+    depends_on:
+      - db
+    networks:
+      - finanzas
+      - shared
+    ports:
+      - "5003:5000"
+    volumes:
+      - ./finanzas:/app
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend_app
+    depends_on:
+      - ventas
+      - rrhh
+      - finanzas
+    networks:
+      - shared
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+
+networks:
+  ventas:
+  rrhh:
+  finanzas:
+  shared:

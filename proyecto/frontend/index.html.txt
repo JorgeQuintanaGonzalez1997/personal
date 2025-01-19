@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Empresarial</title>
+</head>
+<body>
+    <h1>Dashboard Empresarial</h1>
+    <div>
+        <h2>Ventas</h2>
+        <ul id="ventas-data"></ul>
+    </div>
+    <div>
+        <h2>RRHH</h2>
+        <ul id="rrhh-data"></ul>
+    </div>
+    <div>
+        <h2>Finanzas</h2>
+        <ul id="finanzas-data"></ul>
+    </div>
+    <script>
+        async function loadData(endpoint, elementId) {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+            const list = document.getElementById(elementId);
+            list.innerHTML = '';
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = JSON.stringify(item);
+                list.appendChild(li);
+            });
+        }
+
+        loadData('http://localhost:5001/ventas', 'ventas-data');
+        loadData('http://localhost:5002/rrhh', 'rrhh-data');
+        loadData('http://localhost:5003/finanzas', 'finanzas-data');
+    </script>
+</body>
+</html>

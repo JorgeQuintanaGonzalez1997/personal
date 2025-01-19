@@ -1,0 +1,17 @@
+CREATE TABLE ventas (
+    id SERIAL PRIMARY KEY,
+    departamento VARCHAR(255),
+    mensaje TEXT
+);
+
+CREATE TABLE rrhh (
+    id SERIAL PRIMARY KEY,
+    departamento VARCHAR(255),
+    mensaje TEXT
+);
+
+CREATE TABLE finanzas (
+    id SERIAL PRIMARY KEY,
+    departamento VARCHAR(255),
+    mensaje TEXT
+);
